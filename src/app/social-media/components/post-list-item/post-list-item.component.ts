@@ -11,9 +11,12 @@ export class PostListItemComponent implements OnInit {
   @Input() post!: Post;
   @Output() postCommented = new EventEmitter<{ comment: string, postId: number }>();
 
+  tempUser = {firstName: 'charly', lastName: 'brown'};
+
   constructor() {}
 
   ngOnInit(): void {
+    this.tempUser
   }
 
   onNewComment(comment: string): void {
