@@ -34,6 +34,7 @@ export class CommentsComponent implements OnInit {
   @Output() newComment = new EventEmitter<string>();
 
   commentCtrl!: FormControl;
+  listItemAnimationState: 'default' | 'active' = 'default';
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -48,5 +49,14 @@ export class CommentsComponent implements OnInit {
     this.newComment.emit(this.commentCtrl.value);
     this.commentCtrl.reset();
   }
+
+  onListItemMouseEnter() {
+    this.listItemAnimationState = 'active';
+  }
+
+  onListItemMouseLeave() {
+    this.listItemAnimationState = 'default';
+  }
+
 
 }
