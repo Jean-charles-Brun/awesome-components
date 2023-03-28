@@ -10,12 +10,12 @@ import { Comment } from 'src/app/core/models/comment.model';
   animations: [
     trigger('listItem', [
       state('default', style({
-        trasform: 'scale(1)',
+        transform: 'scale(1)',
         'background-color': 'white',
         'z-index': 1
       })),
       state('active', style({
-        trasform: 'scale(1.05)',
+        transform: 'scale(1.05)',
         'background-color': 'rgb(201,157,242)',
         'z-index': 2
       })),
