@@ -22,4 +22,8 @@ export class ComplexFormComponent implements OnInit{
     });
   }
 
+  onSubmitForm() {
+
+  }
+
 }
