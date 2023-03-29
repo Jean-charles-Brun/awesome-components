@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, Observable, startWith } from 'rxjs';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { map, Observable, startWith, tap } from 'rxjs';
 
 @Component({
   selector: 'app-complex-form',
@@ -72,19 +72,57 @@ export class ComplexFormComponent implements OnInit{
     });
   }
 
-  initFormObservable() {
+  private initFormObservable() {
     this.showEmailCtrl$ = this.contactPreferenceCtrl.valueChanges.pipe(
       startWith(this.contactPreferenceCtrl.value),
-      map(preference => preference === 'email')
+      map(preference => preference === 'email'),
+      tap(showEmailCtrl => this.setEmailValidators(showEmailCtrl))
     );
+
     this.showPhoneCtrl$ = this.contactPreferenceCtrl.valueChanges.pipe(
       startWith(this.contactPreferenceCtrl.value),
-      map(preference => preference === 'phone')
+      map(preference => preference === 'phone'),
+      tap(showPhoneCtrl => this.setPhoneValidators(showPhoneCtrl))
     );
+  }
+
+  private setEmailValidators(showEmailCtrl: boolean) {
+    if (showEmailCtrl) {
+      this.emailCtrl.addValidators([Validators.required, Validators.email]);
+      this.confirmEmailCtrl.addValidators([Validators.required, Validators.email]);
+    } else {
+      this.emailCtrl.clearValidators();
+      this.confirmEmailCtrl.clearValidators();
+    }
+    this.emailCtrl.updateValueAndValidity();
+    this.confirmEmailCtrl.updateValueAndValidity();
+  }
+
+  private setPhoneValidators(showPhoneCtrl: boolean) {
+    if (showPhoneCtrl) {
+      this.phoneCtrl.addValidators([Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
+    } else {
+      this.phoneCtrl.clearValidators();
+    }
+    this.phoneCtrl.updateValueAndValidity();
   }
 
   onSubmitForm() {
     console.log(this.mainForm.value);
+  }
+
+  getFormControlErrorText(ctrl: AbstractControl) {
+    if (ctrl.hasError('required')) {
+      return 'Ce champ est requis';
+    } else if (ctrl.hasError('email')){
+      return 'Merci d\'entrer une adresse mail valide';
+    } else if(ctrl.hasError('minlength')) {
+      return 'Ce numéro de téléphone ne contient pas assez de chiffres';
+    } else if (ctrl.hasError('maxlength')) {
+      return 'Ce numéroe de téléphone contient trop de chiffres';
+    } else {
+      return 'Ce champ contient une erreur';
+    }
   }
 
 }
