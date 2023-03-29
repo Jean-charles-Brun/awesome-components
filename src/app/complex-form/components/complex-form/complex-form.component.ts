@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable, startWith, tap } from 'rxjs';
+import { validValidator } from '../../validators/valid.validator';
 
 @Component({
   selector: 'app-complex-form',
