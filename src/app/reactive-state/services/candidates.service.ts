@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, delay, Observable, tap } from "rxjs";
+import { BehaviorSubject, delay, map, Observable, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Candidate } from "../models/candidate.model";
 
@@ -38,4 +38,15 @@ export class CandidateService {
       })
     ).subscribe();
   }
+
+  getCandidateById(id: number): Observable<Candidate> {
+    if (!this.lastCandidatesLoad) {
+      this.getCandidateFromServer();
+    }
+    return this.candidates$.pipe(
+      map(candidates => candidates.filter(candidate => candidate.id === id)[0])
+    );
+
+  }
+
 }
