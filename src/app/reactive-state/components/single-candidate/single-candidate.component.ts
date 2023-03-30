@@ -31,7 +31,13 @@ export class SingleCandidateComponent implements OnInit {
   }
 
   onHire() {
-
+    this.candidate$.pipe(
+      take(1),
+      tap(candidate => {
+        this.candidateService.hireCandidate(candidate.id);
+        this.onGoBack();
+      })
+    ).subscribe();
   }
 
   onRefuse() {
